@@ -43,5 +43,6 @@ export const InteractionFactory = ({ type, ...props }: InteractionFactoryProps) 
   if (!Component) {
     return <div>Interaction type not supported</div>;
   }
-  return <Component {...props} />;
+  // Cast props to any to avoid type errors
+  return <Component {...(props as any)} />;
 }; 

@@ -77,13 +77,13 @@ export default function ScenarioScreen({ scenario, onComplete, difficulty }: Sce
   const renderInteraction = () => {
     switch (scenario.interactionType) {
       case "multiple-choice":
-        return <MultipleChoiceInteraction options={scenario.options} onSelect={handleSubmitAnswer} />
+        return <MultipleChoiceInteraction options={scenario.options || []} onSelect={handleSubmitAnswer} />
       case "drag-drop":
         // Replace drag-drop with category selection
         return (
           <CategorySelectionInteraction
-            items={scenario.items}
-            categories={scenario.categories}
+            items={scenario.items || []}
+            categories={scenario.categories || []}
             onComplete={handleSubmitAnswer}
           />
         )

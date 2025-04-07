@@ -1,35 +1,44 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
-interface Hotspot {
+interface Option {
   id: number
-  x: number
-  y: number
-  size: number
   label: string
+  description?: string
 }
 
-interface HotspotInteractionProps {
+interface CarouselInteractionProps {
   image: string
-  hotspots: Hotspot[]
+  options: Option[]
   question: string
-  onSelect: (hotspotId: number) => void
+  onSelect: (optionId: number) => void
 }
 
-export default function HotspotInteraction({ image, hotspots, question, onSelect }: HotspotInteractionProps) {
-  const [selectedHotspot, setSelectedHotspot] = useState<number | null>(null)
-  const [hoveredHotspot, setHoveredHotspot] = useState<number | null>(null)
+export default function CarouselInteraction({ image, options, question, onSelect }: CarouselInteractionProps) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [selectedOption, setSelectedOption] = useState<number | null>(null)
 
-  const handleHotspotClick = (id: number) => {
-    setSelectedHotspot(id)
+  const currentOption = options[currentIndex]
+
+  const handlePrevious = () => {
+    setCurrentIndex((prev) => (prev === 0 ? options.length - 1 : prev - 1))
+  }
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev === options.length - 1 ? 0 : prev + 1))
+  }
+
+  const handleSelect = (id: number) => {
+    setSelectedOption(id)
   }
 
   const handleSubmit = () => {
-    if (selectedHotspot !== null) {
-      onSelect(selectedHotspot)
+    if (selectedOption !== null) {
+      onSelect(selectedOption)
     }
   }
 
@@ -37,60 +46,102 @@ export default function HotspotInteraction({ image, hotspots, question, onSelect
     <div className="space-y-6">
       <p className="text-sm text-purple-500 italic text-center">{question}</p>
 
-      <div className="relative w-full aspect-video bg-purple-50 rounded-lg overflow-hidden">
-        <img src={image || "/placeholder.svg"} alt="Scenario" className="w-full h-full object-cover" />
+      <div className="w-full max-w-xl mx-auto bg-purple-50 rounded-lg overflow-hidden p-4">
+        {/* Imagem de cenário */}
+        <div className="mb-6 rounded-lg overflow-hidden shadow-md">
+          <img src={image || "/placeholder.svg"} alt="Scenario" className="w-full h-auto object-contain" />
+        </div>
 
-        {hotspots.map((hotspot) => (
-          <motion.div
-            key={hotspot.id}
-            className={`absolute rounded-full cursor-pointer flex items-center justify-center
-              ${
-                selectedHotspot === hotspot.id
-                  ? "bg-purple-600 text-white border-2 border-white"
-                  : "bg-white bg-opacity-80 border border-purple-300 hover:bg-purple-100"
-              }`}
-            style={{
-              left: `${hotspot.x}%`,
-              top: `${hotspot.y}%`,
-              width: `${hotspot.size}px`,
-              height: `${hotspot.size}px`,
-              transform: "translate(-50%, -50%)",
-              zIndex: hoveredHotspot === hotspot.id || selectedHotspot === hotspot.id ? 10 : 1,
-            }}
-            onClick={() => handleHotspotClick(hotspot.id)}
-            onMouseEnter={() => setHoveredHotspot(hotspot.id)}
-            onMouseLeave={() => setHoveredHotspot(null)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            animate={{
-              scale: selectedHotspot === hotspot.id ? [1, 1.2, 1] : 1,
-              boxShadow: selectedHotspot === hotspot.id ? "0 0 0 4px rgba(147, 51, 234, 0.3)" : "none",
-            }}
-            transition={{ duration: 0.3 }}
+        {/* Navegação do carrossel */}
+        <div className="flex items-center justify-between mb-4">
+          <Button
+            onClick={handlePrevious}
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 rounded-full border-purple-300"
           >
-            <span className="text-xs font-bold">{hotspot.id}</span>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
 
-            {(hoveredHotspot === hotspot.id || selectedHotspot === hotspot.id) && (
-              <motion.div
-                initial={{ opacity: 0, y: 10, scale: 0.8 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white p-2 rounded shadow-md text-xs text-purple-800 whitespace-nowrap z-20"
-              >
-                {hotspot.label}
-              </motion.div>
-            )}
-          </motion.div>
-        ))}
-      </div>
+          <div className="flex space-x-1">
+            {options.map((option, idx) => (
+              <div
+                key={option.id}
+                className={`w-2 h-2 rounded-full ${
+                  idx === currentIndex ? "bg-purple-600" : "bg-purple-200"
+                }`}
+              />
+            ))}
+          </div>
 
-      <div className="flex justify-center mt-4">
-        <Button
-          onClick={handleSubmit}
-          disabled={selectedHotspot === null}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-8"
-        >
-          Confirmar Seleção
-        </Button>
+          <Button
+            onClick={handleNext}
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 rounded-full border-purple-300"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+
+        {/* Opção atual */}
+        <div className="relative h-32">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentOption.id}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3 }}
+              className={`absolute w-full p-4 rounded-lg border-2 ${
+                selectedOption === currentOption.id
+                  ? "border-purple-600 bg-purple-50"
+                  : "border-purple-200 bg-white"
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <div
+                  className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+                    selectedOption === currentOption.id
+                      ? "bg-purple-600 text-white"
+                      : "bg-purple-100 text-purple-600"
+                  }`}
+                >
+                  <span className="font-bold">{currentOption.id}</span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-purple-800">{currentOption.label}</h3>
+                  {currentOption.description && (
+                    <p className="text-sm text-gray-600">{currentOption.description}</p>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Botões de ação */}
+        <div className="mt-6 flex space-x-2 justify-center">
+          <Button
+            onClick={() => handleSelect(currentOption.id)}
+            variant={selectedOption === currentOption.id ? "secondary" : "outline"}
+            className={
+              selectedOption === currentOption.id
+                ? "bg-purple-200 text-purple-800 border-purple-400"
+                : ""
+            }
+          >
+            {selectedOption === currentOption.id ? "Selecionado" : "Selecionar esta opção"}
+          </Button>
+          
+          <Button
+            onClick={handleSubmit}
+            disabled={selectedOption === null}
+            className="bg-purple-600 hover:bg-purple-700 text-white"
+          >
+            Confirmar
+          </Button>
+        </div>
       </div>
     </div>
   )

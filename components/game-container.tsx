@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, memo } from "react"
 import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cyberbullyingScenarios } from "@/data/cyberbullying-scenarios"
@@ -13,6 +13,9 @@ import AboutPage from "./layout/about-page"
 import Navigation from "./layout/navigation"
 import confetti from "canvas-confetti"
 import type { Scenario, GameState, Difficulty, Answer } from "@/types/game"
+
+// Create memoized version of ScenarioScreen to prevent unnecessary rerenders
+const MemoizedScenarioScreen = memo(ScenarioScreen)
 
 export default function GameContainer() {
   const [gameState, setGameState] = useState<GameState>("intro")

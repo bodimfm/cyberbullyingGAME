@@ -59,6 +59,16 @@ next-env.d.ts
     --input: 214.3 31.8% 91.4%;
     --ring: 210 90% 40%;
     --radius: 0.5rem;
+    /* Theme variables will be injected here */
+    --color-primary: #0078c8;
+    --color-secondary: #3ab0f8;
+    --color-accent: #7dcbfc;
+    --color-background: #ffffff;
+    --color-text: #1a1a1a;
+    --color-border: #e5e7eb;
+    --color-success: #22c55e;
+    --color-error: #ef4444;
+    --color-warning: #f59e0b;
   }
 
   .dark {
@@ -90,6 +100,8 @@ next-env.d.ts
   }
   body {
     @apply bg-background text-foreground;
+    background-color: var(--color-background);
+    color: var(--color-text);
   }
 }
 
@@ -128,6 +140,17 @@ next-env.d.ts
   }
 }
 
+/* Example utility classes */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+/* Add more utility classes as needed */
+
 
 ```
 
@@ -135,12 +158,12 @@ next-env.d.ts
 
 ```tsx
 import type { Metadata } from 'next'
+import { ThemeProvider } from '@/contexts/theme-context'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'Detetives Digitais',
+  description: 'Jogo educativo sobre cyberbullying',
 }
 
 export default function RootLayout({
@@ -149,8 +172,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="pt-BR">
+      <body>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
@@ -508,7 +535,8 @@ export default function FeedbackPanel({ scenario, userAnswer, isCorrect, onConti
 ```tsx
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
+import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cyberbullyingScenarios } from "@/data/cyberbullying-scenarios"
 import IntroScreen from "./intro-screen"
@@ -531,15 +559,23 @@ export default function GameContainer() {
   const [scenariosForLevel, setScenariosForLevel] = useState<Scenario[]>([])
   const [currentPage, setCurrentPage] = useState("home")
   const [previousState, setPreviousState] = useState<GameState>("intro")
+  const [isLoading, setIsLoading] = useState(false)
 
   // Ref to track if component is mounted
   const isMounted = useRef(true)
 
-  // Filter scenarios based on difficulty
+  const loadScenarios = useCallback(async () => {
+    // Simula carregamento dinâmico, pode ser substituído por API real
+    setIsLoading(true);
+    const filtered = cyberbullyingScenarios.filter((s) => s.difficulty === difficulty || s.difficulty === "all");
+    setScenariosForLevel(filtered);
+    setIsLoading(false);
+  }, [difficulty]);
+
+  // Replace the existing useEffect with the new loadScenarios call
   useEffect(() => {
-    const filtered = cyberbullyingScenarios.filter((s) => s.difficulty === difficulty || s.difficulty === "all")
-    setScenariosForLevel(filtered)
-  }, [difficulty])
+    loadScenarios();
+  }, [loadScenarios]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -675,7 +711,7 @@ export default function GameContainer() {
             exit={{ opacity: 0, x: -100 }}
             transition={{ duration: 0.5 }}
           >
-            <ScenarioScreen
+            <MemoizedScenarioScreen
               scenario={scenariosForLevel[currentScenarioIndex]}
               onComplete={handleScenarioComplete}
               difficulty={difficulty}
@@ -997,6 +1033,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Send, User, Bot } from "lucide-react"
+import { useTheme } from "@/contexts/theme-context"
 
 interface ChatInteractionProps {
   prompt: string
@@ -1010,6 +1047,7 @@ export default function ChatInteraction({ prompt, onSubmit }: ChatInteractionPro
   const [input, setInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const { colors } = useTheme()
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -1043,7 +1081,7 @@ export default function ChatInteraction({ prompt, onSubmit }: ChatInteractionPro
 
   return (
     <div className="border rounded-md overflow-hidden">
-      <div className="bg-slate-50 p-3 border-b">
+      <div className="bg-primary text-background p-3 border-b">
         <h3 className="font-medium text-slate-700">Simulação de Chat</h3>
       </div>
 
@@ -1093,19 +1131,10 @@ export default function ChatInteraction({ prompt, onSubmit }: ChatInteractionPro
                   <Bot className="w-4 h-4 text-white" />
                 </div>
                 <div className="p-3 rounded-lg bg-slate-100">
-                  <div className="flex space-x-1">
-                    <div
-                      className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
-                      style={{ animationDelay: "0ms" }}
-                    ></div>
-                    <div
-                      className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
-                      style={{ animationDelay: "150ms" }}
-                    ></div>
-                    <div
-                      className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
-                      style={{ animationDelay: "300ms" }}
-                    ></div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-[bounce_1s_infinite]"></div>
+                    <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-[bounce_1s_infinite_0.2s]"></div>
+                    <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-[bounce_1s_infinite_0.4s]"></div>
                   </div>
                 </div>
               </div>
@@ -1512,6 +1541,58 @@ export default function HotspotInteraction({ image, hotspots, question, onSelect
 }
 
 
+```
+
+# components/interactions/interaction-factory.tsx
+
+```tsx
+"use client"
+
+import MultipleChoiceInteraction from "./multiple-choice-interaction"
+import CategorySelectionInteraction from "./category-selection-interaction"
+import SliderInteraction from "./slider-interaction"
+import ChatInteraction from "./chat-interaction"
+import SequenceOrderingInteraction from "./sequence-ordering-interaction"
+import HotspotInteraction from "./hotspot-interaction"
+import type { InteractionType } from "@/types/game"
+
+const interactionComponents = {
+  "multiple-choice": MultipleChoiceInteraction,
+  "drag-drop": CategorySelectionInteraction,
+  "slider": SliderInteraction,
+  "chat": ChatInteraction,
+  "timeline": SequenceOrderingInteraction,
+  "hotspot": HotspotInteraction
+} as const;
+
+interface InteractionFactoryProps {
+  type: InteractionType;
+  options?: any[];
+  items?: any[];
+  categories?: string[];
+  sliderConfig?: {
+    min: number;
+    max: number;
+    step: number;
+    label: string;
+  };
+  chatPrompt?: string;
+  timelineEvents?: any[];
+  hotspotImage?: string;
+  hotspots?: any[];
+  hotspotQuestion?: string;
+  onSelect?: (value: any) => void;
+  onSubmit?: (value: any) => void;
+  onComplete?: (value: any) => void;
+}
+
+export const InteractionFactory = ({ type, ...props }: InteractionFactoryProps) => {
+  const Component = interactionComponents[type];
+  if (!Component) {
+    return <div>Interaction type not supported</div>;
+  }
+  return <Component {...props} />;
+}; 
 ```
 
 # components/interactions/multiple-choice-interaction.tsx
@@ -2338,6 +2419,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Home, Info, HelpCircle } from "lucide-react"
+import { ThemeSelector } from "@/components/theme-selector"
 
 interface NavigationProps {
   onNavigate: (page: string) => void
@@ -2363,7 +2445,7 @@ export default function Navigation({ onNavigate, currentPage }: NavigationProps)
   ]
 
   return (
-    <nav className="relative z-50" aria-label="Navegação principal">
+    <nav className="flex items-center justify-between p-4">
       <Button
         variant="outline"
         size="icon"
@@ -2426,6 +2508,8 @@ export default function Navigation({ onNavigate, currentPage }: NavigationProps)
           aria-hidden="true"
         />
       )}
+
+      <ThemeSelector />
     </nav>
   )
 }
@@ -3126,6 +3210,49 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>
 }
 
+```
+
+# components/theme-selector.tsx
+
+```tsx
+"use client"
+
+import { useTheme } from "@/contexts/theme-context"
+import { themes, ThemeType } from "@/lib/themes"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Palette } from "lucide-react"
+
+export function ThemeSelector() {
+  const { currentTheme, setTheme } = useTheme()
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon">
+          <Palette className="h-[1.2rem] w-[1.2rem]" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {(Object.keys(themes) as ThemeType[]).map((theme) => (
+          <DropdownMenuItem
+            key={theme}
+            onClick={() => setTheme(theme)}
+            className={currentTheme === theme ? "bg-accent" : ""}
+          >
+            {theme.charAt(0).toUpperCase() + theme.slice(1)}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+} 
 ```
 
 # components/ui/accordion.tsx
@@ -8463,6 +8590,55 @@ export { useToast, toast }
 
 ```
 
+# contexts/theme-context.tsx
+
+```tsx
+"use client"
+
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { themes, ThemeType, ThemeColors } from '@/lib/themes'
+
+interface ThemeContextType {
+  currentTheme: ThemeType
+  colors: ThemeColors
+  setTheme: (theme: ThemeType) => void
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [currentTheme, setCurrentTheme] = useState<ThemeType>('default')
+
+  useEffect(() => {
+    // Apply theme colors to CSS variables
+    const root = document.documentElement
+    Object.entries(themes[currentTheme]).forEach(([key, value]) => {
+      root.style.setProperty(`--color-${key}`, value)
+    })
+  }, [currentTheme])
+
+  const value = {
+    currentTheme,
+    colors: themes[currentTheme],
+    setTheme: setCurrentTheme
+  }
+
+  return (
+    <ThemeContext.Provider value={value}>
+      {children}
+    </ThemeContext.Provider>
+  )
+}
+
+export function useTheme() {
+  const context = useContext(ThemeContext)
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider')
+  }
+  return context
+}
+```
+
 # data/cyberbullying-scenarios.tsx
 
 ```tsx
@@ -9025,6 +9201,43 @@ export { useToast, toast }
 
 ```
 
+# lib/themes.ts
+
+```ts
+export const themes = {
+  default: {
+    primary: '#0078c8',
+    secondary: '#3ab0f8',
+    accent: '#7dcbfc',
+    background: '#ffffff',
+    text: '#1a1a1a',
+    border: '#e5e7eb'
+  },
+  highContrast: {
+    primary: '#005a9e',
+    secondary: '#007bd9',
+    accent: '#009aff',
+    background: '#ffffff',
+    text: '#000000',
+    border: '#000000'
+  },
+  kids: {
+    primary: '#ff6b6b',
+    secondary: '#4ecdc4',
+    accent: '#ffe66d',
+    background: '#ffffff',
+    text: '#2d3436',
+    border: '#dfe6e9',
+    success: '#06d6a0',
+    error: '#ff7675',
+    warning: '#ffd93d'
+  }
+} as const;
+
+export type ThemeType = keyof typeof themes;
+export type ThemeColors = typeof themes[ThemeType];
+```
+
 # lib/utils.ts
 
 ```ts
@@ -9034,6 +9247,17 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+```
+
+# next-env.d.ts
+
+```ts
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
 
 ```
 
@@ -9163,6 +9387,7 @@ export default nextConfig
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
