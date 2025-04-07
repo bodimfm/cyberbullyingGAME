@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Home, Info, HelpCircle } from "lucide-react"
+import { ThemeSelector } from "@/components/theme-selector"
 
 interface NavigationProps {
   onNavigate: (page: string) => void
@@ -29,7 +30,7 @@ export default function Navigation({ onNavigate, currentPage }: NavigationProps)
   ]
 
   return (
-    <nav className="relative z-50" aria-label="Navegação principal">
+    <nav className="flex items-center justify-between p-4">
       <Button
         variant="outline"
         size="icon"
@@ -92,6 +93,8 @@ export default function Navigation({ onNavigate, currentPage }: NavigationProps)
           aria-hidden="true"
         />
       )}
+
+      <ThemeSelector />
     </nav>
   )
 }

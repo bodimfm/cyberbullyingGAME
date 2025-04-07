@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Send, User, Bot } from "lucide-react"
+import { useTheme } from "@/contexts/theme-context"
 
 interface ChatInteractionProps {
   prompt: string
@@ -20,6 +21,7 @@ export default function ChatInteraction({ prompt, onSubmit }: ChatInteractionPro
   const [input, setInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const { colors } = useTheme()
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -53,7 +55,7 @@ export default function ChatInteraction({ prompt, onSubmit }: ChatInteractionPro
 
   return (
     <div className="border rounded-md overflow-hidden">
-      <div className="bg-slate-50 p-3 border-b">
+      <div className="bg-primary text-background p-3 border-b">
         <h3 className="font-medium text-slate-700">Simulação de Chat</h3>
       </div>
 

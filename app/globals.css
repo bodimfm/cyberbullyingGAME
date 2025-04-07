@@ -24,6 +24,16 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 210 90% 40%;
     --radius: 0.5rem;
+    /* Theme variables will be injected here */
+    --color-primary: #0078c8;
+    --color-secondary: #3ab0f8;
+    --color-accent: #7dcbfc;
+    --color-background: #ffffff;
+    --color-text: #1a1a1a;
+    --color-border: #e5e7eb;
+    --color-success: #22c55e;
+    --color-error: #ef4444;
+    --color-warning: #f59e0b;
   }
 
   .dark {
@@ -55,6 +65,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: var(--color-background);
+    color: var(--color-text);
   }
 }
 
@@ -92,4 +104,15 @@
     min-width: 44px;
   }
 }
+
+/* Example utility classes */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+/* Add more utility classes as needed */
 
