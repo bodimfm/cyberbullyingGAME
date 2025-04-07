@@ -136,13 +136,94 @@ export const cyberbullyingScenarios: Scenario[] = [
     icon: <School className="h-10 w-10 text-blue-700" />,
     difficulty: "advanced",
     interactionType: "chat",
-    chatPrompt:
-      "Olá! Sou um especialista em cyberbullying e gostaria de saber como você abordaria essa situação com seu filho. Que pontos você considera importantes discutir?",
+    chatPrompt: "Como pai/mãe, seu papel é fundamental ao abordar situações de cyberbullying com seu filho. Vamos discutir como você lidaria com esta situação.",
+    // Mantendo o formato antigo para compatibilidade
     correctAnswer: ["conversa", "empatia", "posicionamento", "denúncia", "apoio", "prevenção"],
+    // Novo formato de perguntas estruturadas
+    chatQuestions: [
+      {
+        id: "approach",
+        text: "Qual seria sua primeira abordagem ao conversar com seu filho sobre este comunicado?",
+        options: [
+          { 
+            id: "approach_1", 
+            text: "Perguntar se ele sabe algo sobre o caso e abrir um espaço seguro para conversa", 
+            isCorrect: true 
+          },
+          { 
+            id: "approach_2", 
+            text: "Explicar que cyberbullying é crime e que ele nunca deve se envolver nisso", 
+            isCorrect: false 
+          },
+          { 
+            id: "approach_3", 
+            text: "Verificar os aplicativos e mensagens no celular dele para ver se há envolvimento", 
+            isCorrect: false 
+          },
+          { 
+            id: "approach_4", 
+            text: "Iniciar uma conversa calma, demonstrando abertura para ouvir sem julgamentos", 
+            isCorrect: true 
+          }
+        ]
+      },
+      {
+        id: "empathy",
+        text: "Como você abordaria o tema da empatia nesta conversa?",
+        options: [
+          { 
+            id: "empathy_1", 
+            text: "Explicar que é importante se colocar no lugar da vítima e entender o impacto emocional do cyberbullying", 
+            isCorrect: true 
+          },
+          { 
+            id: "empathy_2", 
+            text: "Dizer que quem pratica bullying eventualmente será vítima também", 
+            isCorrect: false 
+          },
+          { 
+            id: "empathy_3", 
+            text: "Mostrar exemplos de casos reais e suas consequências psicológicas para as vítimas", 
+            isCorrect: true 
+          },
+          { 
+            id: "empathy_4", 
+            text: "Ensinar a ignorar comentários negativos, pois eles não têm importância", 
+            isCorrect: false 
+          }
+        ]
+      },
+      {
+        id: "action",
+        text: "Qual orientação você daria a seu filho caso ele presencie cyberbullying?",
+        options: [
+          { 
+            id: "action_1", 
+            text: "Ignorar para não se envolver em problemas", 
+            isCorrect: false 
+          },
+          { 
+            id: "action_2", 
+            text: "Denunciar a situação a um adulto responsável, como professor ou coordenador", 
+            isCorrect: true 
+          },
+          { 
+            id: "action_3", 
+            text: "Confrontar diretamente os agressores, defendendo a vítima", 
+            isCorrect: false 
+          },
+          { 
+            id: "action_4", 
+            text: "Oferecer apoio à vítima e não compartilhar ou curtir conteúdo ofensivo", 
+            isCorrect: true 
+          }
+        ]
+      }
+    ],
     correctFeedback:
-      "Excelente resposta! Você abordou pontos fundamentais como ter uma conversa aberta, promover empatia, discutir a importância de se posicionar contra o cyberbullying, explicar como denunciar, oferecer apoio e trabalhar em estratégias preventivas.",
+      "Excelente! Suas respostas demonstram uma abordagem adequada ao lidar com situações de cyberbullying. Você priorizou a comunicação aberta, a empatia, e ações concretas de suporte e denúncia, elementos fundamentais para ajudar seu filho a navegar nestas situações.",
     incorrectFeedback:
-      "Sua resposta poderia incluir mais elementos importantes como: promover uma conversa aberta, desenvolver empatia, discutir a importância de se posicionar contra o cyberbullying (sem participar ou compartilhar), explicar como denunciar casos, oferecer apoio e desenvolver estratégias preventivas.",
+      "Algumas de suas respostas poderiam ser aprimoradas. Ao lidar com cyberbullying, é importante priorizar: uma comunicação aberta sem julgamentos, promover a empatia, orientar para ações de denúncia adequadas, e oferecer apoio sem expor as crianças a riscos adicionais.",
     additionalInfo:
       "Casos de cyberbullying na escola impactam todo o ambiente escolar, mesmo alunos que não estão diretamente envolvidos. Estes momentos são oportunidades valiosas para educar as crianças sobre empatia digital, responsabilidade online e a importância de não serem espectadores passivos.",
     legalInfo:

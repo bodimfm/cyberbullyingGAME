@@ -11,25 +11,31 @@ interface Option {
   description?: string
 }
 
-interface CarouselInteractionProps {
+interface HotspotInteractionProps {
   image: string
-  options: Option[]
+  hotspots?: Option[]
+  options?: Option[]  // Accept both hotspots and options for backward compatibility
   question: string
   onSelect: (optionId: number) => void
 }
 
-export default function CarouselInteraction({ image, options, question, onSelect }: CarouselInteractionProps) {
+export default function HotspotInteraction({ image, hotspots, options, question, onSelect }: HotspotInteractionProps) {
+  // Use hotspots if provided, otherwise fall back to options
+  const interactionOptions = hotspots || options || []
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedOption, setSelectedOption] = useState<number | null>(null)
 
-  const currentOption = options[currentIndex]
+  // Make sure we have options to display
+  const currentOption = interactionOptions.length > 0 ? interactionOptions[currentIndex] : null
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev === 0 ? options.length - 1 : prev - 1))
+    if (interactionOptions.length === 0) return
+    setCurrentIndex((prev) => (prev === 0 ? interactionOptions.length - 1 : prev - 1))
   }
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev === options.length - 1 ? 0 : prev + 1))
+    if (interactionOptions.length === 0) return
+    setCurrentIndex((prev) => (prev === interactionOptions.length - 1 ? 0 : prev + 1))
   }
 
   const handleSelect = (id: number) => {
@@ -52,96 +58,107 @@ export default function CarouselInteraction({ image, options, question, onSelect
           <img src={image || "/placeholder.svg"} alt="Scenario" className="w-full h-auto object-contain" />
         </div>
 
-        {/* Navegação do carrossel */}
-        <div className="flex items-center justify-between mb-4">
-          <Button
-            onClick={handlePrevious}
-            variant="outline"
-            size="icon"
-            className="h-8 w-8 rounded-full border-purple-300"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-
-          <div className="flex space-x-1">
-            {options.map((option, idx) => (
-              <div
-                key={option.id}
-                className={`w-2 h-2 rounded-full ${
-                  idx === currentIndex ? "bg-purple-600" : "bg-purple-200"
-                }`}
-              />
-            ))}
+        {interactionOptions.length === 0 ? (
+          <div className="text-center p-4">
+            <p className="text-gray-500">Nenhuma opção disponível</p>
           </div>
+        ) : (
+          <>
+            {/* Navegação do carrossel */}
+            <div className="flex items-center justify-between mb-4">
+              <Button
+                onClick={handlePrevious}
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 rounded-full border-purple-300"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
 
-          <Button
-            onClick={handleNext}
-            variant="outline"
-            size="icon"
-            className="h-8 w-8 rounded-full border-purple-300"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-
-        {/* Opção atual */}
-        <div className="relative h-32">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentOption.id}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.3 }}
-              className={`absolute w-full p-4 rounded-lg border-2 ${
-                selectedOption === currentOption.id
-                  ? "border-purple-600 bg-purple-50"
-                  : "border-purple-200 bg-white"
-              }`}
-            >
-              <div className="flex items-center space-x-3">
-                <div
-                  className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                    selectedOption === currentOption.id
-                      ? "bg-purple-600 text-white"
-                      : "bg-purple-100 text-purple-600"
-                  }`}
-                >
-                  <span className="font-bold">{currentOption.id}</span>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-medium text-purple-800">{currentOption.label}</h3>
-                  {currentOption.description && (
-                    <p className="text-sm text-gray-600">{currentOption.description}</p>
-                  )}
-                </div>
+              <div className="flex space-x-1">
+                {interactionOptions.map((option, idx) => (
+                  <div
+                    key={option.id}
+                    className={`w-2 h-2 rounded-full ${
+                      idx === currentIndex ? "bg-purple-600" : "bg-purple-200"
+                    }`}
+                  />
+                ))}
               </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
 
-        {/* Botões de ação */}
-        <div className="mt-6 flex space-x-2 justify-center">
-          <Button
-            onClick={() => handleSelect(currentOption.id)}
-            variant={selectedOption === currentOption.id ? "secondary" : "outline"}
-            className={
-              selectedOption === currentOption.id
-                ? "bg-purple-200 text-purple-800 border-purple-400"
-                : ""
-            }
-          >
-            {selectedOption === currentOption.id ? "Selecionado" : "Selecionar esta opção"}
-          </Button>
-          
-          <Button
-            onClick={handleSubmit}
-            disabled={selectedOption === null}
-            className="bg-purple-600 hover:bg-purple-700 text-white"
-          >
-            Confirmar
-          </Button>
-        </div>
+              <Button
+                onClick={handleNext}
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 rounded-full border-purple-300"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Opção atual */}
+            {currentOption && (
+              <div className="relative h-32">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentOption.id}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -50 }}
+                    transition={{ duration: 0.3 }}
+                    className={`absolute w-full p-4 rounded-lg border-2 ${
+                      selectedOption === currentOption.id
+                        ? "border-purple-600 bg-purple-50"
+                        : "border-purple-200 bg-white"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div
+                        className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+                          selectedOption === currentOption.id
+                            ? "bg-purple-600 text-white"
+                            : "bg-purple-100 text-purple-600"
+                        }`}
+                      >
+                        <span className="font-bold">{currentOption.id}</span>
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-medium text-purple-800">{currentOption.label}</h3>
+                        {currentOption.description && (
+                          <p className="text-sm text-gray-600">{currentOption.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            )}
+
+            {/* Botões de ação */}
+            <div className="mt-6 flex space-x-2 justify-center">
+              <Button
+                onClick={() => currentOption && handleSelect(currentOption.id)}
+                disabled={!currentOption}
+                variant={currentOption && selectedOption === currentOption.id ? "secondary" : "outline"}
+                className={
+                  currentOption && selectedOption === currentOption.id
+                    ? "bg-purple-200 text-purple-800 border-purple-400"
+                    : ""
+                }
+              >
+                {currentOption && selectedOption === currentOption.id ? "Selecionado" : "Selecionar esta opção"}
+              </Button>
+              
+              <Button
+                onClick={handleSubmit}
+                disabled={selectedOption === null}
+                className="bg-purple-600 hover:bg-purple-700 text-white"
+              >
+                Confirmar
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

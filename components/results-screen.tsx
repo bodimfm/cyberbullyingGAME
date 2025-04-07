@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, XCircle, RotateCcw, Download, Award, ExternalLink } from "lucide-react"
-import type { Scenario, Answer, Difficulty } from "@/types/game"
+import type { Scenario, Answer, Difficulty, InteractionType } from "@/types/game"
 import Image from "next/image"
 
 interface ResultsScreenProps {
@@ -24,9 +24,14 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
     scenarios.length * (difficulty === "beginner" ? 10 : difficulty === "intermediate" ? 15 : 20)
   const percentage = totalPossibleScore > 0 ? Math.round((score / totalPossibleScore) * 100) : 0
 
+  // Calculate correct answer percentage 
+  const correctAnswersCount = answers.filter(a => a.isCorrect).length;
+  const totalAnswers = answers.length;
+  const correctPercentage = totalAnswers > 0 ? Math.round((correctAnswersCount / totalAnswers) * 100) : 0;
+
   useEffect(() => {
-    // Trigger confetti for good scores
-    if (percentage >= 70) {
+    // Trigger confetti for good scores based on correct answer percentage
+    if (correctPercentage >= 70) {
       import("canvas-confetti").then((confetti) => {
         const duration = 3 * 1000
         const end = Date.now() + duration
@@ -55,22 +60,220 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
         })()
       })
     }
-  }, [percentage])
+  }, [correctPercentage])
 
+  // Generate dynamic message based on actual score and correct answers
+  
   let message = ""
-  if (percentage >= 90) {
-    message = "Excelente! Você está muito bem preparado para ajudar seus filhos a lidar com o cyberbullying!"
-  } else if (percentage >= 70) {
-    message = "Muito bom! Você tem bons conhecimentos sobre prevenção e resposta ao cyberbullying."
-  } else if (percentage >= 50) {
-    message = "Bom trabalho! Você está no caminho certo, mas ainda há espaço para aprender mais."
+  if (correctPercentage >= 90) {
+    message = `Excelente! Você acertou ${correctAnswersCount} de ${totalAnswers} questões. Você está muito bem preparado para ajudar seus filhos a lidar com o cyberbullying!`
+  } else if (correctPercentage >= 70) {
+    message = `Muito bom! Você acertou ${correctAnswersCount} de ${totalAnswers} questões. Você tem bons conhecimentos sobre prevenção e resposta ao cyberbullying.`
+  } else if (correctPercentage >= 50) {
+    message = `Bom trabalho! Você acertou ${correctAnswersCount} de ${totalAnswers} questões. Você está no caminho certo, mas ainda há espaço para aprender mais.`
   } else {
-    message = "Continue aprendendo! A proteção das crianças contra o cyberbullying é um tema importante."
+    message = `Continue aprendendo! Você acertou ${correctAnswersCount} de ${totalAnswers} questões. A proteção das crianças contra o cyberbullying é um tema importante.`
   }
 
   const getScenarioById = (id: string): Scenario | undefined => {
     return scenarios.find((s) => s.id === id)
   }
+  
+  // Renderiza a resposta correta baseada no tipo de interação
+  const renderCorrectAnswer = (scenario: Scenario, interactionType: InteractionType) => {
+    switch (interactionType) {
+      case "multiple-choice":
+        const correctOptionIndex = Number(scenario.correctAnswer);
+        return (
+          <p className="text-sm text-gray-700">
+            {scenario.options && scenario.options[correctOptionIndex]}
+          </p>
+        );
+        
+      case "drag-drop":
+        const categorization = scenario.correctAnswer as Record<string, string[]>;
+        return (
+          <div className="text-sm text-gray-700">
+            {Object.entries(categorization).map(([category, items], index) => {
+              const categoryName = scenario.categories?.find(c => c.id === category)?.name || category;
+              return (
+                <div key={index} className="mb-1">
+                  <span className="font-medium">{categoryName}:</span>{" "}
+                  {items.map(itemId => {
+                    const item = scenario.items?.find(i => i.id === itemId);
+                    return item ? item.content : itemId;
+                  }).join(", ")}
+                </div>
+              );
+            })}
+          </div>
+        );
+        
+      case "slider":
+        return (
+          <p className="text-sm text-gray-700">
+            {scenario.correctAnswer}
+            {scenario.sliderConfig?.unit ? ` ${scenario.sliderConfig.unit}` : ""}
+          </p>
+        );
+        
+      case "chat":
+        // Check if we have the new structured format or old keywords format
+        if (scenario.chatQuestions && Array.isArray(scenario.chatQuestions)) {
+          // New structured format
+          return (
+            <div className="text-sm text-gray-700">
+              {scenario.chatQuestions.map((question, index) => {
+                const correctOptions = question.options.filter(opt => opt.isCorrect);
+                
+                return (
+                  <div key={index} className="mb-2">
+                    <div className="font-medium">{index + 1}. {question.text}</div>
+                    {correctOptions.length > 0 ? (
+                      <ul className="list-disc pl-8">
+                        {correctOptions.map((option, optIndex) => (
+                          <li key={optIndex} className="text-green-600">
+                            {option.text}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="pl-4 text-gray-500 italic">Nenhuma opção marcada como correta.</p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        } else {
+          // Old keywords format
+          const keywords = scenario.correctAnswer as string[];
+          return (
+            <p className="text-sm text-gray-700">
+              Palavras-chave esperadas: {keywords.join(", ")}
+            </p>
+          );
+        }
+        
+      case "timeline":
+        const sequence = scenario.correctAnswer as string[];
+        return (
+          <div className="text-sm text-gray-700">
+            <ol className="list-decimal pl-5">
+              {sequence.map((eventId, index) => {
+                const event = scenario.timelineEvents?.find(e => e.id === eventId);
+                return <li key={index}>{event ? event.content : eventId}</li>;
+              })}
+            </ol>
+          </div>
+        );
+        
+      case "hotspot":
+        const correctHotspotId = Number(scenario.correctAnswer);
+        const hotspot = scenario.hotspots?.find(h => h.id === correctHotspotId);
+        return (
+          <p className="text-sm text-gray-700">
+            {hotspot ? hotspot.label : `Opção ${correctHotspotId}`}
+          </p>
+        );
+        
+      default:
+        return null;
+    }
+  };
+  
+  // Renderiza a resposta do usuário baseada no tipo de interação
+  const renderUserAnswer = (userAnswer: any, interactionType: InteractionType, scenario: Scenario) => {
+    switch (interactionType) {
+      case "multiple-choice":
+        const optionIndex = Number(userAnswer);
+        return (
+          <p className="text-sm text-gray-700">
+            {scenario.options && scenario.options[optionIndex]}
+          </p>
+        );
+        
+      case "drag-drop":
+        return (
+          <div className="text-sm text-gray-700">
+            {Object.entries(userAnswer).map(([category, items]: [string, any], index) => {
+              const categoryName = scenario.categories?.find(c => c.id === category)?.name || category;
+              return (
+                <div key={index} className="mb-1">
+                  <span className="font-medium">{categoryName}:</span>{" "}
+                  {Array.isArray(items) && items.map(itemId => {
+                    const item = scenario.items?.find(i => i.id === itemId);
+                    return item ? item.content : itemId;
+                  }).join(", ")}
+                </div>
+              );
+            })}
+          </div>
+        );
+        
+      case "slider":
+        return (
+          <p className="text-sm text-gray-700">
+            {userAnswer}
+            {scenario.sliderConfig?.unit ? ` ${scenario.sliderConfig.unit}` : ""}
+          </p>
+        );
+        
+      case "chat":
+        // Check if we have the new structured format or old text format
+        if (typeof userAnswer === 'object' && userAnswer !== null) {
+          // New structured format
+          return (
+            <div className="text-sm text-gray-700">
+              {scenario.chatQuestions && Object.entries(userAnswer as Record<string, string>).map(([questionId, answerText], index) => {
+                const question = scenario.chatQuestions?.find(q => q.id === questionId);
+                const selectedOption = question?.options.find(opt => opt.text === answerText);
+                
+                return question ? (
+                  <div key={index} className="mb-2">
+                    <div className="font-medium">{index + 1}. {question.text}</div>
+                    <div className={`pl-4 ${selectedOption?.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                      {answerText}
+                    </div>
+                  </div>
+                ) : null;
+              })}
+            </div>
+          );
+        } else {
+          // Old text format - show the text directly
+          return (
+            <p className="text-sm text-gray-700 italic">
+              "{userAnswer}"
+            </p>
+          );
+        }
+        
+      case "timeline":
+        return (
+          <div className="text-sm text-gray-700">
+            <ol className="list-decimal pl-5">
+              {Array.isArray(userAnswer) && userAnswer.map((eventId, index) => {
+                const event = scenario.timelineEvents?.find(e => e.id === eventId);
+                return <li key={index}>{event ? event.content : eventId}</li>;
+              })}
+            </ol>
+          </div>
+        );
+        
+      case "hotspot":
+        const hotspotId = Number(userAnswer);
+        const hotspot = scenario.hotspots?.find(h => h.id === hotspotId);
+        return (
+          <p className="text-sm text-gray-700">
+            {hotspot ? hotspot.label : `Opção ${hotspotId}`}
+          </p>
+        );
+        
+      default:
+        return <p className="text-sm text-gray-700">{JSON.stringify(userAnswer)}</p>;
+    }
+  };
 
   const resources = [
     {
@@ -144,6 +347,10 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
           <h3 className="text-xl font-semibold mb-2">
             Você marcou {score} de {totalPossibleScore} pontos possíveis
           </h3>
+          
+          <div className="text-lg text-purple-600 mb-4">
+            {answers.filter(a => a.isCorrect).length} de {answers.length} respostas corretas
+          </div>
 
           <p className="text-gray-600 mb-6">{message}</p>
 
@@ -153,7 +360,7 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
             transition={{ delay: 0.5, duration: 0.5 }}
             className="flex flex-wrap justify-center gap-4 mb-6"
           >
-            {percentage >= 70 && (
+            {correctPercentage >= 70 && (
               <Button
                 variant="outline"
                 className="flex items-center gap-2 border-blue-300 text-blue-700 hover:bg-blue-50"
@@ -261,11 +468,25 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
                         <XCircle className="h-5 w-5 text-red-500" />
                       )}
                     </div>
-                    <div>
+                    <div className="w-full">
                       <p className="font-medium mb-1">{scenario.text}</p>
-                      <p className="text-sm text-gray-600 mb-1">
+                      <p className="text-sm text-gray-600 mb-2">
                         {answer.isCorrect ? scenario.correctFeedback : scenario.incorrectFeedback}
                       </p>
+                      
+                      {/* Mostrar informações adicionais sobre a resposta */}
+                      {!answer.isCorrect && (
+                        <div className="mt-2 pt-2 border-t border-gray-100">
+                          <p className="text-xs text-purple-600 font-medium mb-1">Resposta correta:</p>
+                          {renderCorrectAnswer(scenario, answer.interactionType)}
+                        </div>
+                      )}
+                      
+                      {/* Mostrar a resposta do usuário */}
+                      <div className="mt-2 pt-2 border-t border-gray-100">
+                        <p className="text-xs text-blue-600 font-medium mb-1">Sua resposta:</p>
+                        {renderUserAnswer(answer.userAnswer, answer.interactionType, scenario)}
+                      </div>
                     </div>
                   </div>
                 </motion.div>

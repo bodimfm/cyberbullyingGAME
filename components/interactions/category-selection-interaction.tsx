@@ -82,7 +82,22 @@ export default function CategorySelectionInteraction({ items, categories, onComp
       return
     }
 
-    onComplete(categorizedItems)
+    // Make sure we have all categories represented, even if empty
+    const finalCategorizedItems = { ...categorizedItems };
+    
+    // Ensure all categories exist in the result
+    categories.forEach(category => {
+      if (!finalCategorizedItems[category.id]) {
+        finalCategorizedItems[category.id] = [];
+      }
+    });
+    
+    // Log what we're sending, for debugging
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Submitting categorized items:', finalCategorizedItems);
+    }
+    
+    onComplete(finalCategorizedItems);
   }
 
   // Helper function to get item content by ID

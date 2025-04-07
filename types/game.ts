@@ -32,13 +32,30 @@ export interface Scenario {
 
   // For chat
   chatPrompt?: string
+  // Structured questions for chat interaction
+  chatQuestions?: {
+    id: string;
+    text: string;
+    options: {
+      id: string;
+      text: string;
+      isCorrect?: boolean;
+    }[];
+  }[]
 
   // For timeline
   timelineEvents?: { id: string; content: string }[]
 
   // For hotspot
   hotspotImage?: string
-  hotspots?: { id: number; x: number; y: number; size: number; label: string }[]
+  hotspots?: { 
+    id: number; 
+    x: number; 
+    y: number; 
+    size: number; 
+    label: string;
+    isAlmostCorrect?: boolean; // Added for beginner-mode alternative correct answers
+  }[]
   hotspotQuestion?: string
 
   // Feedback

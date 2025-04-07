@@ -21,7 +21,22 @@ export default function FeedbackPanel({ scenario, userAnswer, isCorrect, onConti
       case "slider":
         return `${answer}${scenario.sliderConfig?.unit || ""}`
       case "chat":
-        return answer
+        if (typeof answer === 'object' && answer !== null) {
+          return (
+            <div className="space-y-2">
+              {Object.entries(answer).map(([questionId, responseText]) => {
+                const question = scenario.chatQuestions?.find(q => q.id === questionId);
+                return (
+                  <div key={questionId} className="py-1">
+                    {question && <p className="text-sm font-medium text-gray-600">{question.text}</p>}
+                    <p className="ml-3">{responseText as string}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )
+        }
+        return answer as string || "Sem resposta"
       case "drag-drop":
         return "Sua classificação dos itens"
       case "timeline":
@@ -41,7 +56,27 @@ export default function FeedbackPanel({ scenario, userAnswer, isCorrect, onConti
       case "slider":
         return `${answer}${scenario.sliderConfig?.unit || ""}`
       case "chat":
-        return `Palavras-chave esperadas: ${(answer as string[]).join(", ")}`
+        if (scenario.chatQuestions && scenario.chatQuestions.length > 0) {
+          return (
+            <div className="space-y-2">
+              {scenario.chatQuestions.map(question => {
+                const correctOption = question.options.find(opt => opt.isCorrect);
+                if (!correctOption) return null;
+                
+                return (
+                  <div key={question.id} className="py-1">
+                    <p className="text-sm font-medium text-gray-600">{question.text}</p>
+                    <p className="ml-3">{correctOption.text}</p>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        }
+        if (Array.isArray(answer)) {
+          return `Palavras-chave esperadas: ${(answer as string[]).join(", ")}`;
+        }
+        return "Resposta modelo não disponível"
       case "drag-drop":
         return "Classificação correta dos itens"
       case "timeline":
