@@ -53,6 +53,19 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Cores da OAB-Goiás
+        oab: {
+          blue: {
+            DEFAULT: "#005691",
+            light: "#6496c1",
+            dark: "#004a7a",
+          },
+          red: {
+            DEFAULT: "#C00000",
+            light: "#d63031",
+            dark: "#a30000",
+          }
+        },
         blue: {
           50: "#f0f7ff",
           100: "#e0eefe",
@@ -60,11 +73,24 @@ const config = {
           300: "#7dcbfc",
           400: "#3ab0f8",
           500: "#0e96ea",
-          600: "#0078c8",
-          700: "#0060a3",
-          800: "#065186",
-          900: "#0a4570",
-          950: "#072c4b",
+          600: "#005691", // Alterado para Azul OAB
+          700: "#004a7a", // Versão mais escura
+          800: "#003d65",
+          900: "#002d4a",
+          950: "#001e31",
+        },
+        red: {
+          50: "#fff0f0",
+          100: "#ffe0e0",
+          200: "#ffc7c7",
+          300: "#ffa3a3",
+          400: "#ff6a6a",
+          500: "#ff3a3a",
+          600: "#C00000", // Alterado para Vermelho OAB
+          700: "#a30000", // Versão mais escura
+          800: "#860000",
+          900: "#6f0000",
+          950: "#4a0000",
         },
       },
       borderRadius: {

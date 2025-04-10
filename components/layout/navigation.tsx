@@ -35,11 +35,11 @@ export default function Navigation({ onNavigate, currentPage }: NavigationProps)
         variant="outline"
         size="icon"
         onClick={toggleMenu}
-        className="fixed top-4 right-4 bg-white shadow-md border-blue-200 z-50"
+        className="fixed top-4 right-4 bg-white shadow-md border-oab-blue-light z-50"
         aria-expanded={isOpen}
         aria-label="Menu de navegação"
       >
-        {isOpen ? <X className="h-5 w-5 text-blue-700" /> : <Menu className="h-5 w-5 text-blue-700" />}
+        {isOpen ? <X className="h-5 w-5 text-oab-blue-DEFAULT" /> : <Menu className="h-5 w-5 text-oab-blue-DEFAULT" />}
       </Button>
 
       <AnimatePresence>
@@ -58,8 +58,8 @@ export default function Navigation({ onNavigate, currentPage }: NavigationProps)
                     variant="ghost"
                     className={`w-full justify-start text-left p-3 ${
                       currentPage === item.id
-                        ? "bg-blue-100 text-blue-800 font-medium"
-                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+                        ? "bg-blue-50 text-oab-blue-DEFAULT font-medium"
+                        : "text-gray-700 hover:bg-blue-50 hover:text-oab-blue-DEFAULT"
                     }`}
                     onClick={() => handleNavigate(item.id)}
                     aria-current={currentPage === item.id ? "page" : undefined}
@@ -74,7 +74,7 @@ export default function Navigation({ onNavigate, currentPage }: NavigationProps)
             <div className="absolute bottom-8 left-0 right-0 px-4">
               <div className="border-t border-gray-200 pt-4 mt-4">
                 <p className="text-xs text-gray-500 text-center">
-                  © {new Date().getFullYear()} RM SOFTWARES E TREINAMENTOS LTDA
+                  © {new Date().getFullYear()} OAB-GO - Ordem dos Advogados do Brasil - Seccional Goiás
                 </p>
               </div>
             </div>

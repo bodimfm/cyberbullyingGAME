@@ -455,7 +455,7 @@ export default function ScenarioScreen({ scenario, onComplete, difficulty }: Sce
 
   return (
     <Card className="w-full overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white relative">
+      <div className="bg-gradient-to-r from-oab-blue-DEFAULT to-oab-blue-dark p-6 text-white relative">
         <h2 className="text-2xl font-bold">Cenário</h2>
         {scenario.mascot && (
           <div className="absolute right-4 bottom-0 transform translate-y-1/2">
@@ -483,7 +483,7 @@ export default function ScenarioScreen({ scenario, onComplete, difficulty }: Sce
             >
               <div className="mb-8">
                 <div className="flex items-center justify-center mb-6">
-                  <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-oab-blue-DEFAULT">
                     {scenario.icon}
                   </div>
                 </div>
@@ -491,7 +491,7 @@ export default function ScenarioScreen({ scenario, onComplete, difficulty }: Sce
                 <p className="text-lg text-gray-800 text-center mb-4">{scenario.text}</p>
 
                 {scenario.context && (
-                  <div className="bg-blue-50 p-4 rounded-md mb-6 text-sm text-blue-600 border border-blue-100">
+                  <div className="bg-blue-50 p-4 rounded-md mb-6 text-sm text-oab-blue-DEFAULT border border-oab-blue-light">
                     {scenario.context}
                   </div>
                 )}

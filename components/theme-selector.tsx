@@ -11,6 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Palette } from "lucide-react"
 
+// Helper function para formatar nomes dos temas
+const formatThemeName = (theme: string): string => {
+  if (theme === 'oabGoias') return "OAB Goiás"
+  return theme.charAt(0).toUpperCase() + theme.slice(1)
+}
+
 export function ThemeSelector() {
   const { currentTheme, setTheme } = useTheme()
 
@@ -29,10 +35,10 @@ export function ThemeSelector() {
             onClick={() => setTheme(theme)}
             className={currentTheme === theme ? "bg-accent" : ""}
           >
-            {theme.charAt(0).toUpperCase() + theme.slice(1)}
+            {formatThemeName(theme)}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )
-} 
+}

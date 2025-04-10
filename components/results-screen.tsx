@@ -36,7 +36,8 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
         const duration = 3 * 1000
         const end = Date.now() + duration
 
-        const colors = ["#7c3aed", "#8b5cf6", "#a78bfa"]
+        // Cores da OAB-Goiás
+        const colors = ["#005691", "#6496c1", "#C00000"]
         ;(function frame() {
           confetti.default({
             particleCount: 2,
@@ -291,11 +292,16 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
       description: "Serviço de atendimento a vítimas de violência online",
       url: "https://new.safernet.org.br/helpline",
     },
+    {
+      title: "OAB-GO - Comissão de Direito Digital",
+      description: "Informações sobre direitos digitais e segurança online",
+      url: "https://www.oabgo.org.br/",
+    }
   ]
 
   return (
     <Card className="w-full overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white text-center relative">
+      <div className="bg-gradient-to-r from-oab-blue-DEFAULT to-oab-blue-dark p-6 text-white text-center relative">
         <motion.div
           className="absolute right-4 bottom-0 transform translate-y-1/3"
           initial={{ y: 20, opacity: 0 }}
@@ -322,8 +328,8 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
           transition={{ duration: 0.5 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-blue-100 mb-4 relative">
-            <span className="text-3xl font-bold text-blue-700">{percentage}%</span>
+          <div className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-blue-50 mb-4 relative">
+            <span className="text-3xl font-bold text-oab-blue-DEFAULT">{percentage}%</span>
             <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 100 100">
               <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" strokeWidth="8" />
               <motion.circle
@@ -331,7 +337,7 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
                 cy="50"
                 r="45"
                 fill="none"
-                stroke="#0078c8"
+                stroke="#005691"
                 strokeWidth="8"
                 strokeLinecap="round"
                 strokeDasharray={`${percentage * 2.83} 283`}
@@ -348,7 +354,7 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
             Você marcou {score} de {totalPossibleScore} pontos possíveis
           </h3>
           
-          <div className="text-lg text-purple-600 mb-4">
+          <div className="text-lg text-oab-red-DEFAULT mb-4">
             {answers.filter(a => a.isCorrect).length} de {answers.length} respostas corretas
           </div>
 
@@ -362,8 +368,8 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
           >
             {correctPercentage >= 70 && (
               <Button
-                variant="outline"
-                className="flex items-center gap-2 border-blue-300 text-blue-700 hover:bg-blue-50"
+                variant="oabOutlineBlue"
+                className="flex items-center gap-2"
                 onClick={() => setShowCertificate(!showCertificate)}
               >
                 <Award className="h-4 w-4" />
@@ -372,8 +378,8 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
             )}
 
             <Button
-              variant="outline"
-              className="flex items-center gap-2 border-blue-300 text-blue-700 hover:bg-blue-50"
+              variant="oabOutlineRed"
+              className="flex items-center gap-2"
               onClick={() => setShowResources(!showResources)}
             >
               <ExternalLink className="h-4 w-4" />
@@ -383,26 +389,26 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
 
           {showCertificate && (
             <motion.div
-              className="mb-6 p-6 border-2 border-blue-200 rounded-lg bg-white"
+              className="mb-6 p-6 border-2 border-oab-blue-light rounded-lg bg-white"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="text-center relative p-8 border-4 border-blue-700">
+              <div className="text-center relative p-8 border-4 border-oab-blue-DEFAULT">
                 <div className="absolute top-4 left-4">
                   <Image src="/images/logo.png" alt="OAB GOIÁS" width={100} height={40} />
                 </div>
 
-                <h3 className="text-2xl font-bold text-blue-800 mb-2 mt-10">Certificado de Conclusão</h3>
+                <h3 className="text-2xl font-bold text-oab-blue-DEFAULT mb-2 mt-10">Certificado de Conclusão</h3>
                 <p className="text-lg mb-4">Cyberbullying: Game educativo para prevenção e combate</p>
                 <p className="mb-6">
                   Este certificado reconhece que você completou com sucesso o treinamento sobre prevenção e resposta ao
                   cyberbullying.
                 </p>
-                <p className="text-sm text-blue-500 mb-4">{new Date().toLocaleDateString()}</p>
+                <p className="text-sm text-oab-blue-DEFAULT mb-4">{new Date().toLocaleDateString()}</p>
 
                 <div className="flex justify-center">
-                  <Button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button variant="oabBlue" className="mt-4">
                     <Download className="mr-2 h-4 w-4" /> Baixar Certificado
                   </Button>
                 </div>
@@ -412,12 +418,12 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
 
           {showResources && (
             <motion.div
-              className="mb-6 p-6 border-2 border-purple-200 rounded-lg bg-white"
+              className="mb-6 p-6 border-2 border-oab-blue-light rounded-lg bg-white"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl font-semibold mb-4 text-purple-800">Recursos para Combate ao Cyberbullying</h3>
+              <h3 className="text-xl font-semibold mb-4 text-oab-blue-DEFAULT">Recursos para Combate ao Cyberbullying</h3>
               <div className="space-y-4">
                 {resources.map((resource, index) => (
                   <motion.a
@@ -425,18 +431,18 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
                     href={resource.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block p-4 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors"
+                    className="block p-4 border border-oab-blue-light rounded-lg hover:bg-blue-50 transition-colors"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1, duration: 0.3 }}
                   >
                     <div className="flex items-center">
                       <div className="mr-3">
-                        <ExternalLink className="h-5 w-5 text-purple-600" />
+                        <ExternalLink className="h-5 w-5 text-oab-blue-DEFAULT" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-purple-700">{resource.title}</h4>
-                        <p className="text-sm text-purple-600">{resource.description}</p>
+                        <h4 className="font-medium text-oab-blue-DEFAULT">{resource.title}</h4>
+                        <p className="text-sm text-oab-blue-DEFAULT opacity-80">{resource.description}</p>
                       </div>
                     </div>
                   </motion.a>
@@ -447,7 +453,7 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
         </motion.div>
 
         <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4 text-purple-800">Resumo das Respostas</h3>
+          <h3 className="text-xl font-semibold mb-4 text-oab-blue-DEFAULT">Resumo das Respostas</h3>
 
           <div className="space-y-4">
             {answers.map((answer, index) => {
@@ -455,7 +461,7 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
               return scenario ? (
                 <motion.div
                   key={index}
-                  className="p-4 border border-purple-200 rounded-md"
+                  className="p-4 border border-oab-blue-light rounded-md"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 * index, duration: 0.5 }}
@@ -477,14 +483,14 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
                       {/* Mostrar informações adicionais sobre a resposta */}
                       {!answer.isCorrect && (
                         <div className="mt-2 pt-2 border-t border-gray-100">
-                          <p className="text-xs text-purple-600 font-medium mb-1">Resposta correta:</p>
+                          <p className="text-xs text-oab-blue-DEFAULT font-medium mb-1">Resposta correta:</p>
                           {renderCorrectAnswer(scenario, answer.interactionType)}
                         </div>
                       )}
                       
                       {/* Mostrar a resposta do usuário */}
                       <div className="mt-2 pt-2 border-t border-gray-100">
-                        <p className="text-xs text-blue-600 font-medium mb-1">Sua resposta:</p>
+                        <p className="text-xs text-oab-blue-DEFAULT font-medium mb-1">Sua resposta:</p>
                         {renderUserAnswer(answer.userAnswer, answer.interactionType, scenario)}
                       </div>
                     </div>
@@ -496,7 +502,7 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
         </div>
 
         <div className="flex justify-center">
-          <Button onClick={onRestart} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button onClick={onRestart} variant="oabBlue">
             <RotateCcw className="mr-2 h-4 w-4" /> Jogar Novamente
           </Button>
         </div>

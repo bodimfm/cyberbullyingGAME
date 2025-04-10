@@ -79,14 +79,14 @@ export default function GameContainer() {
       setScore((prevScore) => {
         const newScore = prevScore + pointsEarned
 
-        // Trigger confetti for correct answers
+        // Trigger confetti for correct answers com as cores da OAB-Goiás
         setTimeout(() => {
           if (isMounted.current) {
             confetti({
               particleCount: 100,
               spread: 70,
               origin: { y: 0.6 },
-              colors: ["#0078c8", "#3ab0f8", "#7dcbfc"],
+              colors: ["#005691", "#6496c1", "#C00000"], // Cores da OAB-Goiás: azul, azul claro e vermelho
             })
           }
         }, 300)

@@ -12,7 +12,8 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState<ThemeType>('default')
+  // Alterado para usar o tema oabGoias como padrão
+  const [currentTheme, setCurrentTheme] = useState<ThemeType>('oabGoias')
 
   useEffect(() => {
     // Apply theme colors to CSS variables

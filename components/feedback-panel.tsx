@@ -126,16 +126,16 @@ export default function FeedbackPanel({ scenario, userAnswer, isCorrect, onConti
 
       <div className="mb-6">
         <div className="flex items-center mb-2">
-          <Info className="w-5 h-5 mr-2 text-blue-600" />
+          <Info className="w-5 h-5 mr-2 text-oab-blue-DEFAULT" />
           <h3 className="text-lg font-semibold">Saiba mais:</h3>
         </div>
-        <div className="p-4 rounded-md bg-blue-50 border border-blue-200">
-          <p className="text-blue-700">{scenario.additionalInfo}</p>
+        <div className="p-4 rounded-md bg-blue-50 border border-oab-blue-light">
+          <p className="text-oab-blue-DEFAULT">{scenario.additionalInfo}</p>
 
           {scenario.legalInfo && (
-            <div className="mt-3 pt-3 border-t border-blue-200">
-              <p className="text-sm font-medium text-blue-800 mb-1">Aspectos Legais:</p>
-              <p className="text-sm text-blue-700">{scenario.legalInfo}</p>
+            <div className="mt-3 pt-3 border-t border-oab-blue-light">
+              <p className="text-sm font-medium text-oab-blue-DEFAULT mb-1">Aspectos Legais:</p>
+              <p className="text-sm text-oab-blue-DEFAULT opacity-90">{scenario.legalInfo}</p>
             </div>
           )}
         </div>
@@ -143,12 +143,12 @@ export default function FeedbackPanel({ scenario, userAnswer, isCorrect, onConti
 
       <div className="flex justify-between">
         {onBack && (
-          <Button onClick={onBack} variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50">
+          <Button onClick={onBack} variant="oabOutlineBlue" className="hover:bg-blue-50">
             <ArrowLeft className="mr-2 h-4 w-4" /> Voltar à pergunta
           </Button>
         )}
         <div className={onBack ? "" : "ml-auto"}>
-          <Button onClick={onContinue} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button onClick={onContinue} variant="oabBlue">
             Continuar <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

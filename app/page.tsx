@@ -5,7 +5,7 @@ import Header from "@/components/header"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex flex-col">
+    <main className="min-h-screen bg-gradient-to-b from-white to-blue-50 flex flex-col">
       <Header />
       <div className="flex-grow flex items-center justify-center p-4 pt-24 pb-12">
         <Suspense fallback={<LoadingScreen />}>

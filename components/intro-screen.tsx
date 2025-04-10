@@ -18,17 +18,17 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
 
   const features = [
     {
-      icon: <Shield className="h-8 w-8 text-blue-700" />,
+      icon: <Shield className="h-8 w-8 text-oab-blue-DEFAULT" />,
       title: "Prevenção & Resposta",
       description: "Aprenda estratégias eficazes para prevenir e responder ao cyberbullying.",
     },
     {
-      icon: <Brain className="h-8 w-8 text-blue-700" />,
+      icon: <Brain className="h-8 w-8 text-oab-blue-DEFAULT" />,
       title: "Educação Digital",
       description: "Desenvolva competências para ajudar seus filhos a navegar com segurança online.",
     },
     {
-      icon: <MessageCircle className="h-8 w-8 text-blue-700" />,
+      icon: <MessageCircle className="h-8 w-8 text-oab-blue-DEFAULT" />,
       title: "Comunicação Aberta",
       description: "Crie um ambiente de confiança para discutir experiências online.",
     },
@@ -76,7 +76,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-8 text-white text-center relative overflow-hidden">
+      <div className="bg-gradient-to-r from-oab-blue-DEFAULT to-oab-blue-dark p-8 text-white text-center relative overflow-hidden">
         <motion.div
           className="absolute -right-10 -bottom-10 opacity-20"
           initial={{ rotate: -10, scale: 0.8 }}
@@ -125,7 +125,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
                   />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-blue-700 mb-2">{steps[currentStep].title}</h2>
+                  <h2 className="text-xl font-bold text-oab-blue-DEFAULT mb-2">{steps[currentStep].title}</h2>
                   <p className="text-gray-700">{steps[currentStep].content}</p>
                 </div>
               </div>
@@ -135,15 +135,15 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
                   {features.map((feature, index) => (
                     <motion.div
                       key={index}
-                      className="bg-blue-50 p-4 rounded-lg text-center hover:shadow-md transition-all duration-300 hover:-translate-y-1 border border-blue-100"
+                      className="bg-blue-50 p-4 rounded-lg text-center hover:shadow-md transition-all duration-300 hover:-translate-y-1 border border-oab-blue-light"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 + index * 0.2, duration: 0.5 }}
                       whileHover={{ scale: 1.03 }}
                     >
                       <div className="flex justify-center mb-3">{feature.icon}</div>
-                      <h3 className="font-semibold text-blue-800 mb-1">{feature.title}</h3>
-                      <p className="text-sm text-blue-600">{feature.description}</p>
+                      <h3 className="font-semibold text-oab-blue-DEFAULT mb-1">{feature.title}</h3>
+                      <p className="text-sm text-oab-blue-DEFAULT">{feature.description}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -153,7 +153,8 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
                 <Button
                   onClick={handleNextStep}
                   size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                  variant="oabBlue"
+                  className="px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   {currentStep < steps.length - 1 ? "Próximo" : "Iniciar Jogo"} <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>

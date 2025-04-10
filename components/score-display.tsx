@@ -26,9 +26,9 @@ export default function ScoreDisplay({ score, difficulty, previousScore }: Score
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <Award className="h-5 w-5 text-blue-700 mr-2" />
-        <span className="font-medium text-blue-900">{score} pontos</span>
-        <span className="ml-2 text-xs bg-blue-100 px-2 py-0.5 rounded-full text-blue-600">{difficultyLabel}</span>
+        <Award className="h-5 w-5 text-oab-blue-DEFAULT mr-2" />
+        <span className="font-medium text-oab-blue-DEFAULT">{score} pontos</span>
+        <span className="ml-2 text-xs bg-blue-50 px-2 py-0.5 rounded-full text-oab-red-DEFAULT">{difficultyLabel}</span>
       </motion.div>
 
       {/* Score increase animation */}
