@@ -53,17 +53,20 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Cores da OAB-Goiás
+        // Cores da OAB-Goiás atualizadas
         oab: {
           blue: {
-            DEFAULT: "#005691",
-            light: "#6496c1",
-            dark: "#004a7a",
+            DEFAULT: "#004A80",  // Azul OAB-GO (tom mais escuro e mais preciso)
+            light: "#6496c1",    // Versão mais clara para itens secundários
+            dark: "#003A65",     // Versão ainda mais escura para hover/focus
           },
           red: {
-            DEFAULT: "#C00000",
-            light: "#d63031",
-            dark: "#a30000",
+            DEFAULT: "#B10000",  // Vermelho OAB-GO (tom mais escuro e mais preciso)
+            light: "#CC3333",    // Versão mais clara para itens secundários
+            dark: "#8B0000",     // Versão ainda mais escura para hover/focus
+          },
+          yellow: {
+            DEFAULT: "#FFCC00",  // Amarelo para destaques (cor complementar)
           }
         },
         blue: {
@@ -73,11 +76,11 @@ const config = {
           300: "#7dcbfc",
           400: "#3ab0f8",
           500: "#0e96ea",
-          600: "#005691", // Alterado para Azul OAB
-          700: "#004a7a", // Versão mais escura
-          800: "#003d65",
-          900: "#002d4a",
-          950: "#001e31",
+          600: "#004A80", // Atualizado para o azul mais preciso da OAB-GO
+          700: "#003A65", // Versão mais escura
+          800: "#002C4E",
+          900: "#001F38",
+          950: "#001525",
         },
         red: {
           50: "#fff0f0",
@@ -86,10 +89,10 @@ const config = {
           300: "#ffa3a3",
           400: "#ff6a6a",
           500: "#ff3a3a",
-          600: "#C00000", // Alterado para Vermelho OAB
-          700: "#a30000", // Versão mais escura
-          800: "#860000",
-          900: "#6f0000",
+          600: "#B10000", // Atualizado para o vermelho mais preciso da OAB-GO
+          700: "#8B0000", // Versão mais escura
+          800: "#700000",
+          900: "#5C0000",
           950: "#4a0000",
         },
       },

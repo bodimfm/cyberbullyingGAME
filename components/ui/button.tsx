@@ -18,15 +18,19 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Novas variantes para OAB-Goiás
+        // Variantes atualizadas para OAB-Goiás
         oabBlue: 
-          "bg-oab-blue-DEFAULT text-white hover:bg-oab-blue-dark",
+          "bg-oab-blue-DEFAULT text-white hover:bg-oab-blue-dark shadow-md",
         oabRed: 
-          "bg-oab-red-DEFAULT text-white hover:bg-oab-red-dark",
+          "bg-oab-red-DEFAULT text-white hover:bg-oab-red-dark shadow-md",
         oabOutlineBlue:
-          "border-2 border-oab-blue-DEFAULT bg-transparent text-oab-blue-DEFAULT hover:bg-oab-blue-DEFAULT hover:text-white",
+          "border-2 border-oab-blue-DEFAULT bg-transparent text-oab-blue-DEFAULT hover:bg-oab-blue-DEFAULT hover:text-white transition-colors duration-300",
         oabOutlineRed:
-          "border-2 border-oab-red-DEFAULT bg-transparent text-oab-red-DEFAULT hover:bg-oab-red-DEFAULT hover:text-white",
+          "border-2 border-oab-red-DEFAULT bg-transparent text-oab-red-DEFAULT hover:bg-oab-red-DEFAULT hover:text-white transition-colors duration-300",
+        oabYellow:
+          "bg-oab-yellow-DEFAULT text-oab-blue-dark hover:bg-oab-yellow-DEFAULT/90 hover:text-oab-blue-DEFAULT shadow-md",
+        oabGradient:
+          "bg-gradient-to-r from-oab-blue-DEFAULT to-oab-blue-dark text-white hover:from-oab-blue-dark hover:to-oab-blue-DEFAULT shadow-md",
       },
       size: {
         default: "h-10 px-4 py-2",

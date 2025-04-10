@@ -11,9 +11,10 @@ export const themes = {
     warning: '#f59e0b'
   },
   oabGoias: {
-    primary: '#005691',    // Azul OAB
-    secondary: '#C00000',  // Vermelho OAB
+    primary: '#004A80',    // Azul OAB-GO (tom mais escuro)
+    secondary: '#B10000',  // Vermelho OAB-GO (tom mais escuro)
     accent: '#6496c1',     // Azul OAB mais claro
+    highlight: '#FFCC00',  // Amarelo para destaques (cor complementar)
     background: '#ffffff',
     text: '#1a1a1a',
     border: '#e5e7eb',

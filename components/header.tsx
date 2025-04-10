@@ -6,7 +6,7 @@ import { ThemeSelector } from "./theme-selector"
 
 export default function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50 border-t-4 border-oab-red-DEFAULT">
+    <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50 oab-header-border">
       <div className="container mx-auto px-4 py-2 flex justify-between items-center">
         <motion.div
           className="flex items-center"

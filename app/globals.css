@@ -10,9 +10,9 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 205 100% 29%;  /* OAB Blue #005691 */
+    --primary: 205 100% 25%;  /* OAB Blue #004A80 - Atualizado */
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 100% 38%;  /* OAB Red #C00000 */
+    --secondary: 0 100% 35%;  /* OAB Red #B10000 - Atualizado */
     --secondary-foreground: 0 0% 100%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -22,12 +22,13 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 205 100% 29%;    /* OAB Blue */
+    --ring: 205 100% 25%;    /* OAB Blue */
     --radius: 0.5rem;
-    /* Theme variables */
-    --color-primary: #005691; /* OAB Blue */
-    --color-secondary: #C00000; /* OAB Red */
+    /* Theme variables - Atualizadas com as cores corretas da OAB-GO */
+    --color-primary: #004A80; /* OAB Blue atualizado */
+    --color-secondary: #B10000; /* OAB Red atualizado */
     --color-accent: #6496c1; /* Lighter OAB Blue */
+    --color-highlight: #FFCC00; /* OAB Yellow para destaques */
     --color-background: #ffffff;
     --color-text: #1a1a1a;
     --color-border: #e5e7eb;
@@ -43,9 +44,9 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 205 100% 29%;  /* OAB Blue */
+    --primary: 205 100% 25%;  /* OAB Blue atualizado */
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 100% 38%;  /* OAB Red */
+    --secondary: 0 100% 35%;  /* OAB Red atualizado */
     --secondary-foreground: 0 0% 100%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
@@ -55,7 +56,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 205 100% 29%;    /* OAB Blue */
+    --ring: 205 100% 25%;    /* OAB Blue atualizado */
   }
 }
 
@@ -105,7 +106,7 @@
   }
 }
 
-/* OAB-GO Utility classes */
+/* OAB-GO Utility classes - Atualizadas com cores corretas */
 .bg-primary {
   background-color: var(--color-primary);
 }
@@ -130,7 +131,15 @@
   color: var(--color-accent);
 }
 
-/* Botões com estilo da OAB-GO */
+.bg-highlight {
+  background-color: var(--color-highlight);
+}
+
+.text-highlight {
+  color: var(--color-highlight);
+}
+
+/* Botões com estilo da OAB-GO - Atualizados com cores corretas */
 .btn-oab-primary {
   background-color: var(--color-primary);
   color: white;
@@ -141,7 +150,7 @@
 }
 
 .btn-oab-primary:hover {
-  background-color: #004a7a; /* Versão mais escura do azul OAB */
+  background-color: #003A65; /* Versão mais escura do azul OAB */
 }
 
 .btn-oab-secondary {
@@ -154,6 +163,27 @@
 }
 
 .btn-oab-secondary:hover {
-  background-color: #a30000; /* Versão mais escura do vermelho OAB */
+  background-color: #8B0000; /* Versão mais escura do vermelho OAB */
+}
+
+/* Estilos específicos para o site da OAB */
+.oab-header-border {
+  border-top: 4px solid var(--color-secondary);
+}
+
+.oab-gradient {
+  background-image: linear-gradient(to right, var(--color-primary), var(--color-primary-dark, #003A65));
+}
+
+.oab-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.oab-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
