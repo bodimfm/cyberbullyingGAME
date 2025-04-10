@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Shield, Brain, MessageCircle, ArrowRight } from "lucide-react"
+import { Shield, Brain, MessageCircle, ArrowRight, AlertCircle, CheckCircle, ArrowLeft, Info, Users } from "lucide-react"
 import Image from "next/image"
 import DifficultySelector from "./difficulty-selector"
 import type { Difficulty } from "@/types/game"

@@ -390,7 +390,7 @@ export default function ResultsScreen({ score, answers, scenarios, difficulty, o
             >
               <div className="text-center relative p-8 border-4 border-blue-700">
                 <div className="absolute top-4 left-4">
-                  <Image src="/images/logo.png" alt="Rafael Maciel Sociedade de Advogados" width={100} height={40} />
+                  <Image src="/images/logo.png" alt="OAB GOIÁS" width={100} height={40} />
                 </div>
 
                 <h3 className="text-2xl font-bold text-blue-800 mb-2 mt-10">Certificado de Conclusão</h3>

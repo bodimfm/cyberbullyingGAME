@@ -125,6 +125,39 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             </div>
           </section>
 
+          <section className="mb-8">
+            <h2 className="text-xl font-bold text-blue-800 mb-4">Sobre a OAB GOIÁS</h2>
+            <div className="flex flex-col md:flex-row items-center mb-6">
+              <div className="md:mr-6 mb-4 md:mb-0">
+                <Image
+                  src="/images/logo.png"
+                  alt="OAB GOIÁS"
+                  width={200}
+                  height={80}
+                  className="rounded-md"
+                />
+              </div>
+              <div>
+                <p className="text-gray-700">
+                  A OAB GOIÁS é a seccional goiana da Ordem dos Advogados do Brasil, 
+                  comprometida com a defesa das prerrogativas da advocacia e a promoção 
+                  da justiça e cidadania.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <a
+                href="https://www.oabgo.org.br"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                Visite o site da OAB GOIÁS <ExternalLink className="ml-1 h-4 w-4" />
+              </a>
+            </div>
+          </section>
+
           <div className="flex justify-start">
             <Button
               onClick={onBack}

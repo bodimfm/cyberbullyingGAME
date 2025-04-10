@@ -12,13 +12,6 @@ export default function LoadingScreen() {
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
         />
-        <motion.div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          animate={{ scale: [0.8, 1, 0.8] }}
-          transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-        >
-          <Image src="/images/mascot-clipboard.png" alt="Loading" width={30} height={30} />
-        </motion.div>
       </div>
       <p className="mt-4 text-purple-700 font-medium">Carregando...</p>
     </div>

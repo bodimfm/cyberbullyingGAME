@@ -13,10 +13,10 @@ export default function Header() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <a href="https://www.rafaelmaciel.com.br" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.oabgo.org.br" target="_blank" rel="noopener noreferrer">
             <Image
               src="/images/logo.png"
-              alt="Rafael Maciel Sociedade de Advogados"
+              alt="OAB GOIÁS"
               width={150}
               height={60}
               className="h-12 w-auto"

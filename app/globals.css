@@ -25,9 +25,9 @@
     --ring: 210 90% 40%;
     --radius: 0.5rem;
     /* Theme variables will be injected here */
-    --color-primary: #0078c8;
-    --color-secondary: #3ab0f8;
-    --color-accent: #7dcbfc;
+    --color-primary: #005691; /* OAB Blue */
+    --color-secondary: #C00000; /* OAB Red */
+    --color-accent: #6496c1; /* Lighter OAB Blue */
     --color-background: #ffffff;
     --color-text: #1a1a1a;
     --color-border: #e5e7eb;

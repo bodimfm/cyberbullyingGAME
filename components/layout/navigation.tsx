@@ -74,7 +74,7 @@ export default function Navigation({ onNavigate, currentPage }: NavigationProps)
             <div className="absolute bottom-8 left-0 right-0 px-4">
               <div className="border-t border-gray-200 pt-4 mt-4">
                 <p className="text-xs text-gray-500 text-center">
-                  © {new Date().getFullYear()} Rafael Maciel Sociedade de Advogados
+                  © {new Date().getFullYear()} RM SOFTWARES E TREINAMENTOS LTDA
                 </p>
               </div>
             </div>
